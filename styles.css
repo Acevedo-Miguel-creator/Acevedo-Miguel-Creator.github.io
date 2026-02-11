@@ -26,7 +26,22 @@ body {
   background-color: var(--clr-bg);
 }
 
+/* Default to Dark Theme logic */
+:root {
+  --clr-bg: #0d1117;
+  /* Dark GitHub-like background */
+  --clr-bg-alt: #161b22;
+  --clr-fg: #c9d1d9;
+  /* Silver/Grey text */
+  --clr-fg-alt: #f0f6fc;
+  /* White/Bright text */
+  --clr-primary: #0aff0a;
+  /* Neon Green Accent */
+  --shadow: rgba(0, 0, 0, 0.5) 0px 10px 36px 0px;
+}
+
 .light {
+  /* Override if light mode is toggled, though we prefer dark now */
   --clr-bg: #fcfcfc;
   --clr-bg-alt: #fff;
   --clr-fg: #555;
@@ -36,13 +51,11 @@ body {
 }
 
 .dark {
-  --clr-bg: #23283e;
-  --clr-bg-alt: #2a2f4c;
-  --clr-fg: #bdbddd;
-  --clr-fg-alt: #cdcdff;
-  --clr-primary: #90a0d9;
-  --shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
-    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  --clr-bg: #0d1117;
+  --clr-bg-alt: #161b22;
+  --clr-fg: #c9d1d9;
+  --clr-fg-alt: #f0f6fc;
+  --clr-primary: #0aff0a;
 }
 
 ::-moz-selection {
@@ -69,7 +82,7 @@ h1 {
 }
 
 h2 {
-  font-size: 2rem;
+  font-size: 2.2rem;
 }
 
 h3 {
@@ -250,9 +263,105 @@ main {
   width: 1em;
 }
 
-.about {
-  flex-direction: column;
-  margin-top: 3em;
+/* Hero Split Layout */
+.hero-split {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4em;
+  min-height: 80vh;
+  /* Takes up most of the screen */
+  margin-top: 2em;
+}
+
+.hero-left {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-right {
+  flex: 1.5;
+  max-width: 600px;
+}
+
+.profile-video-container {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid var(--clr-primary);
+  box-shadow: 0 0 20px rgba(10, 255, 10, 0.4);
+  /* Green glow */
+}
+
+.profile-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Timeline Layout */
+.timeline {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-left: 20px;
+  border-left: 2px solid var(--clr-primary);
+}
+
+.timeline-item {
+  padding-left: 30px;
+  margin-bottom: 3em;
+  position: relative;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -9px;
+  /* Adjust to center on line */
+  top: 5px;
+  width: 16px;
+  height: 16px;
+  background-color: var(--clr-bg);
+  border: 2px solid var(--clr-primary);
+  border-radius: 50%;
+}
+
+.timeline-date {
+  font-size: 0.9rem;
+  color: var(--clr-primary);
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  font-family: "VT323", monospace;
+}
+
+.timeline-content h3 {
+  margin-bottom: 0.2em;
+}
+
+.timeline-content h4 {
+  margin-bottom: 1em;
+  font-size: 1.1rem;
+  color: var(--clr-fg);
+  /* Muted color for company/role */
+}
+
+/* Timeline Hover Effects */
+.timeline-content {
+  padding: 1em;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+  transform: translateY(-5px) scale(1.02);
+  border-color: var(--clr-primary);
+  box-shadow: 0 5px 15px rgba(10, 255, 10, 0.1);
+  background-color: rgba(10, 255, 10, 0.02);
 }
 
 .about__name {
@@ -264,8 +373,12 @@ main {
 }
 
 .about__desc {
-  font-size: 1rem;
+  font-size: 1.4rem;
   max-width: 600px;
+  font-family: "Courier New", Courier, monospace;
+  min-height: 100px;
+  line-height: 1.6;
+  /* Reserve space for typewriter */
 }
 
 .about__desc,
@@ -273,8 +386,23 @@ main {
   margin-top: 2.4em;
 }
 
-.about .link--icon {
-  margin-right: 0.8em;
+@media (max-width: 900px) {
+  .hero-split {
+    flex-direction: column;
+    gap: 2em;
+    text-align: center;
+  }
+
+  .hero-right {
+    text-align: center;
+    width: 100%;
+  }
+
+  .about__desc {
+    text-align: left;
+    /* Keep bio left-aligned closer to readability or center if preferred */
+    margin: 0 auto;
+  }
 }
 
 .about .btn--outline {
@@ -294,11 +422,22 @@ main {
   margin: 0 auto;
   text-align: center;
   box-shadow: var(--shadow);
-  transition: transform 0.2s linear;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  /* Prevent jump on hover */
+  border-radius: 8px;
+  /* Smooth corners */
 }
 
 .project:hover {
   transform: translateY(-7px);
+  border-color: var(--clr-primary);
+  box-shadow: 0 10px 20px rgba(10, 255, 10, 0.15);
+}
+
+.project h4 {
+  margin-top: 0.5em;
+  color: var(--clr-primary);
 }
 
 .project__description {
@@ -334,6 +473,27 @@ main {
 
 .skills__list-item {
   margin: 0.5em;
+}
+
+/* Hobbies / Side Quest Styles */
+#hobbies .skills__list-item {
+  font-size: 1.1rem;
+  padding: 0.8em 1.5em;
+  /* Match btn padding roughly but looks better with border */
+  border: 2px solid var(--clr-primary);
+  background: transparent;
+  color: var(--clr-primary);
+  transition: all 0.3s ease;
+  box-shadow: none;
+  /* Reset plain btn shadow */
+}
+
+#hobbies .skills__list-item:hover {
+  background: var(--clr-primary);
+  color: var(--clr-bg);
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  cursor: default;
 }
 
 .contact {
@@ -388,10 +548,6 @@ main {
     width: 100%;
   }
 
-  .nav__list-item {
-    margin: 0.5em 0;
-  }
-
   .nav__hamburger {
     display: flex;
     margin-left: 0.8em;
@@ -410,4 +566,100 @@ main {
   .scroll-container {
     display: none;
   }
+}
+
+/* Terminal Extras (Global) */
+.blink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+/* Typewriter Cursor */
+.cursor::after {
+  content: '|';
+  display: inline-block;
+  color: var(--clr-primary);
+  animation: blink 1s infinite;
+  margin-left: 2px;
+  font-weight: bold;
+}
+
+/* Side Quests (Interactive) */
+#quest-trigger {
+  margin: 0 auto 2em auto;
+  display: block;
+  border-radius: 25px;
+}
+
+#quest-container.hidden {
+  display: none;
+}
+
+#quest-container {
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* Bubble Card Style */
+.quest-card {
+  border: 2px dashed var(--clr-primary);
+  background: transparent;
+  border-radius: 20px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.quest-card:hover {
+  transform: translateY(-7px);
+  /* background-color: rgba(10, 255, 10, 0.05); Removed to stop text highlight look */
+  box-shadow: 0 10px 20px rgba(10, 255, 10, 0.2);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hobbies {
+  text-align: center;
+  display: block;
+}
+
+/* Side Quests Layout Override: Center Orphan Cards */
+#quest-container .projects__grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2em;
+}
+
+#quest-container .quest-card {
+  flex: 1 1 18em;
+  /* Grow, shrink, basis */
+  max-width: 25em;
+  /* Prevent overly wide cards */
+  width: 100%;
 }
